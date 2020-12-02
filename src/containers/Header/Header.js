@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './Header.css';
 const header = () => (
     <nav className="Header">
         <ul>
             <li>
-                <Link to="/">Home</Link>
+                <NavLink to="/" exact activeStyle={{ color: 'red' }}> Home</NavLink>
             </li>
             <li>
-                <Link to="/posts">Posts</Link>
+                <NavLink to="/posts">Posts</NavLink>
             </li>
             <li>
-                <Link to="/new-post">New Post</Link>
+                <NavLink to="/new-post">New Post</NavLink>
             </li>
         </ul>
     </nav>

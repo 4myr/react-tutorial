@@ -10,6 +10,9 @@ class NewPost extends Component {
         content: '',
         author: 'Max'
     }
+    componentWillUpdate() {
+        console.log('whaaat?');
+    }
 
     postDataHandler = () => {
         const data = {
@@ -21,6 +24,7 @@ class NewPost extends Component {
         axios.post("http://jsonplaceholder.typicode.com/posts", data).then(response => {
             console.log(response);
         });
+        this.props.history.replace('/posts')
     };
 
     render () {

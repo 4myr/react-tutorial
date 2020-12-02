@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import axios from '../../axios';
 import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-
 
 class Posts extends Component {
 
@@ -12,7 +10,6 @@ class Posts extends Component {
         selectedPostId: null,
         error: false
     }
-
     componentDidMount() {
         axios.get('posts').then(response => {
             const posts = response.data.slice(0, 4);
@@ -28,18 +25,21 @@ class Posts extends Component {
         });
     }
     postSelectedHandler = (id) => {
-        this.setState({selectedPostId: id});
+        this.props.history.push("/posts/" + id);
+        // this.setState({selectedPostId: id});
     }
     render() {
         let posts = <p style={{textAlign: 'center'}}>Something went wrong!</p>;
         if(!this.state.error) {
             posts = this.state.posts.map(post => {
                 return (
+                    // <Link key={post.id} to={ "/" + post.id }>
                     <Post
-                    clicked={() => this.postSelectedHandler(post.id)}
                     key={post.id}
+                    clicked={() => this.postSelectedHandler(post.id)}
                     title={post.title}
                     author={post.author} />
+                    // </Link>
                 );
             });
         }
@@ -47,9 +47,6 @@ class Posts extends Component {
             <div>
                 <section className="Posts">
                     { posts }
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId} />
                 </section>
             </div>
         );
