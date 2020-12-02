@@ -1,0 +1,17 @@
+.Header {
+    margin: 0;
+    text-align: center;
+}
+.Header ul li {
+    display: inline-block;
+    padding: 5px 20px;
+    border: 1px solid grey;
+}
+.Header a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+.Header a.active {
+    color: orange;
+}

@@ -1,60 +1,31 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
-import axios from '../../axios';
-
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
 import NewPost from '../../components/NewPost/NewPost';
+import Header from '../Header/Header';
+import Posts from '../Posts/Posts';
+import { Route, Switch } from 'react-router-dom';
 import './Blog.css';
-
-
+import asyncComponent from '../../hoc/asyncComponent';
+// import FullPost from '../../components/FullPost/FullPost';
+const asyncFullPost = asyncComponent(() => {
+    return import('../../components/FullPost/FullPost');
+});
 class Blog extends Component {
     state = {
-        posts: [],
-        selectedPostId: null,
-        error: false
-    }
-    componentDidMount() {
-        axios.get('posts').then(response => {
-            const posts = response.data.slice(0, 4);
-            const updatedPosts = posts.map(post => {
-                return {
-                    ...post,
-                    author: 'AMYR'
-                }
-            })
-            this.setState({posts: updatedPosts});
-        }).catch(error => {
-            this.setState({error: true});
-        });
-    }
-    postSelectedHandler = (id) => {
-        this.setState({selectedPostId: id});
+        access: true
     }
     render () {
-        let posts = <p style={{textAlign: 'center'}}>Something went wrong!</p>;
-        if(!this.state.error) {
-            posts = this.state.posts.map(post => {
-                return (
-                    <Post
-                    clicked={() => this.postSelectedHandler(post.id)}
-                    key={post.id}
-                    title={post.title}
-                    author={post.author} />
-                );
-            });
-        }
         return (
             <div>
-                <section className="Posts">
-                    { posts }
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId} />
-                </section>
-                <section>
-                    <NewPost />
-                </section>
+                <Header />
+                <Switch>
+                    <Route path="/posts/:id" component={ asyncFullPost } />
+                    <Route path="/posts" component={ Posts } />
+                    { this.state.access ? 
+                        <Route path="/new-post" component={ NewPost } /> : null
+                    }
+                    <Route exact path="/" render={() => <h1>Home</h1>}  />
+                    <Route exact render={() => <h1>Not Found!</h1>} />
+                </Switch>
             </div>
         );
     }
